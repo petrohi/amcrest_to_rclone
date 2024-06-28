@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/var/lib/sftp/sftp_amcrest/venv/bin/python
 
 import os
 import sys
@@ -15,8 +15,8 @@ config = read_config(sys.argv[1])
 
 DATE_REGEX = re.compile('([0-9]{4})-([0-9]{2})-([0-9]{2})')
 HOUR_REGEX = re.compile('[0-9]{2}')
-MP4_REGEX = re.compile('.+\.mp4$')
-UNFINISHED_MP4_REGEX = re.compile('.+\.mp4_$')
+MP4_REGEX = re.compile('.+\\.mp4$')
+UNFINISHED_MP4_REGEX = re.compile('.+\\.mp4_$')
 
 def scan(camera_name, camera_dir, rclone_remote):
     date_dirs = os.listdir(camera_dir)
