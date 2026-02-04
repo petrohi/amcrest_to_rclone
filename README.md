@@ -50,7 +50,8 @@ mv amcrest_to_dropbox-${TAG}/*.toml .
 mv amcrest_to_dropbox-${TAG}/*.txt .
 rm -r ${TAG}.tar.gz amcrest_to_dropbox-${TAG}/
 python3 -m venv ~/venv
-~/venv/bin/pip install -r requirements.txt
+~/venv/bin/pip install -r 
+rm requirements.txt
 ```
 4.3 Configure rclone
 ```
