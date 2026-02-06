@@ -1,4 +1,4 @@
-#!/var/lib/sftp/sftp_amcrest/venv/bin/python
+#!/var/lib/sftp/sftp_amcrest/venv/bin/python -u
 
 import os
 import sys

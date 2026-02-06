@@ -1,4 +1,4 @@
-# Automatic upload of Amcrest media to Dropbox
+# Automatic upload of Amcrest media to Rclone
 
 ## Setup
 
@@ -40,15 +40,15 @@ sudo systemctl restart ssh
 sudo -u sftp_amcrest bash
 cd
 ```
-4.2 Install latest `amcrest_to_dropbox` release
+4.2 Install latest `sync_amcrest` release
 ```
 export TAG=0.0.5
-wget https://github.com/petrohi/amcrest_to_dropbox/archive/refs/tags/${TAG}.tar.gz
+wget https://github.com/petrohi/sync_amcrest/archive/refs/tags/${TAG}.tar.gz
 tar xf ${TAG}.tar.gz
-mv amcrest_to_dropbox-${TAG}/*.py .
-mv amcrest_to_dropbox-${TAG}/*.toml .
-mv amcrest_to_dropbox-${TAG}/*.txt .
-rm -r ${TAG}.tar.gz amcrest_to_dropbox-${TAG}/
+mv sync_amcrest-${TAG}/*.py .
+mv sync_amcrest-${TAG}/*.toml .
+mv sync_amcrest-${TAG}/*.txt .
+rm -r ${TAG}.tar.gz sync_amcrest-${TAG}/
 python3 -m venv ~/venv
 ~/venv/bin/pip install -r 
 rm requirements.txt
@@ -59,7 +59,7 @@ rclone config
 ```
 4.4 Test sync
 ```
-~/sync_dropbox.py ~/sync_dropbox.toml
+~/sync_amcrest.py ~/sync_amcrest.toml
 ```
 4.5 Setup cron job
 ```
@@ -67,5 +67,5 @@ crontab -e
 ```
 Paste folowing line at the end of edited file
 ```
-15 * * * * ~/sync_dropbox.py ~/sync_dropbox.toml >> ~/sync_dropbox.log 2>&1
+15 * * * * ~/sync_amcrest.py ~/sync_amcrest.toml 2>&1 | (logger -s -t sync_amcrest)
 ```
