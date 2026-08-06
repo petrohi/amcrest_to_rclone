@@ -1,9 +1,0 @@
-[dropbox]
-refresh_token = "<YOUR TOKEN>"
-folder = "/Monitoring Media"
-
-[cameras]
-dir = "/var/lib/sftp/sftp_amcrest"
-
-[cameras.test]
-serial = "<YOUR SERIAL>"

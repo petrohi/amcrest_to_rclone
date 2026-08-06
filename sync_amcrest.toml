@@ -1,0 +1,13 @@
+[daemon]
+pid_file = "/tmp/sync_amcrest.pid"
+ffmpeg_concat_list_file = "/tmp/ffmpeg_concat_list.txt"
+ffmpeg_concat_file = "/tmp/ffmpeg_concat.mp4"
+
+[rclone]
+remote = "media"
+
+[cameras]
+dir = "/var/lib/sftp/sftp_amcrest"
+
+[cameras.test]
+serial = "<YOUR SERIAL>"

@@ -1,12 +1,12 @@
-# Automatic upload of Amcrest media to Dropbox
+# Automatic upload of Amcrest media to Rclone
 
 ## Setup
 
-### 1. Install Python and FFMPEG
+### 1. Install Python, FFMPEG and rclone
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install python3-pip ffmpeg
+sudo apt install python3-venv ffmpeg rclone
 ```
 ### 2. Setup `sftp` group, `sftp_amcrest` user, its password, and configure `sshd` server
 ```
@@ -34,48 +34,38 @@ sudo systemctl restart ssh
 ![storage_record_destination_ftp](/doc/storage_record_destination_ftp.png)
 3.5 Take note of camera serial number (S/N)
 ![information_version](/doc/information_version.png)
-### 4. Create Dropbox app
-4.1 Create new Dropbox App in [App Console](https://www.dropbox.com/developers/apps)
-![dbx_create_app](/doc/dbx_create_app.png)
-4.2 Set App permissions for `files.content.write`
-![dbx_set_app_permissions](/doc/dbx_set_app_permissions.png)
-4.3 Take note of App key 
-![dbx_app_key](/doc/dbx_app_key.png)
-### 5. Setup sync cron job
-5.1 Login as `sftp_amcrest`
+### 4. Setup sync cron job
+4.1 Login as `sftp_amcrest`
 ```
 sudo -u sftp_amcrest bash
 cd
 ```
-5.2 Install latest `amcrest_to_dropbox` release
+4.2 Install latest `sync_amcrest` release
 ```
-export TAG=0.0.4
-wget https://github.com/petrohi/amcrest_to_dropbox/archive/refs/tags/${TAG}.tar.gz
+export TAG=0.0.5
+wget https://github.com/petrohi/sync_amcrest/archive/refs/tags/${TAG}.tar.gz
 tar xf ${TAG}.tar.gz
-mv amcrest_to_dropbox-${TAG}/*.py .
-mv amcrest_to_dropbox-${TAG}/*.toml .
-mv amcrest_to_dropbox-${TAG}/*.txt .
-rm -r ${TAG}.tar.gz amcrest_to_dropbox-${TAG}/
-pip install -r requirements.txt
+mv sync_amcrest-${TAG}/*.py .
+mv sync_amcrest-${TAG}/*.toml .
+mv sync_amcrest-${TAG}/*.txt .
+rm -r ${TAG}.tar.gz sync_amcrest-${TAG}/
+python3 -m venv ~/venv
+~/venv/bin/pip install -r 
+rm requirements.txt
 ```
-5.3 Authenticate with Dropbox. This command will print Dropbox user email and refresh token.
+4.3 Configure rclone
 ```
-DROPBOX_APP_KEY=<YOU APP KEY> ~/auth_dropbox.py
+rclone config
 ```
-5.4 Edit `refresh_token` and camera(s) `serial` in `sync_dropbox.toml`
+4.4 Test sync
 ```
-nano sync_dropbox.toml
+~/sync_amcrest.py ~/sync_amcrest.toml
 ```
-5.5 Test sync with Dropbox
-```
-DROPBOX_APP_KEY=<YOU APP KEY> ~/sync_dropbox.py ~/sync_dropbox.toml
-```
-
-5.6 Setup cron job
+4.5 Setup cron job
 ```
 crontab -e
 ```
 Paste folowing line at the end of edited file
 ```
-15 * * * * DROPBOX_APP_KEY=<YOU APP KEY> ~/sync_dropbox.py ~/sync_dropbox.toml >> ~/sync_dropbox.log 2>&1
+15 * * * * ~/sync_amcrest.py ~/sync_amcrest.toml 2>&1 | (logger -s -t sync_amcrest)
 ```
